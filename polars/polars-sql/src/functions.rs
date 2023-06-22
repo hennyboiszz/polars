@@ -357,6 +357,7 @@ impl PolarsSqlFunctions {
             "sind",
             "starts_with",
             "stddev",
+            "substr",
             "sum",
             "tan",
             "tan",
@@ -423,6 +424,7 @@ impl TryFrom<&'_ SQLFunction> for PolarsSqlFunctions {
             "max" => Self::Max,
             "min" => Self::Min,
             "stddev" | "stddev_samp" => Self::StdDev,
+            "substr" | "substring" => Self::SubStr,
             "sum" => Self::Sum,
             "variance" | "var_samp" => Self::Variance,
             // ----
@@ -516,6 +518,7 @@ impl SqlFunctionVisitor<'_> {
                 ),
             },
             StartsWith => self.visit_binary(|e, s| e.str().starts_with(s)),
+            Substr => self.visit_binary(|e, s| e.str().substring(s)),
             Upper => self.visit_unary(|e| e.str().to_uppercase()),
             // ----
             // Aggregate functions
